@@ -2,6 +2,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import baseVertexShader from '../shaders/base/vertex.js'
 import baseFragmentShader from '../shaders/base/fragment.js'
+import particleTexture from '../assets/particle.jpg'
  
 let instance = null
 
@@ -12,24 +13,66 @@ export default class ThreeScene {
             return instance
         }
         instance = this
-        this.simpleInit(canvas);
+        this.simpleInit(canvas)
 
+    }
+
+    lerp (a, b, t) {
+        return a * (1 - t ) + b * t
     }
 
     simpleInit (canvas) {
         // Scene
         const scene = new THREE.Scene()
 
-        // Objects
-        const geometry = new THREE.PlaneGeometry( 1, 1 );
+        //Object
+        const boxGeometry = new THREE.BoxBufferGeometry(1, 1, 1)
+        const boxMaterial = new THREE.MeshBasicMaterial()
+        boxMaterial.color = new THREE.Color(0xff0000)
+        const box = new THREE.Mesh(boxGeometry,boxMaterial)
+        // scene.add(box)
+
+        // Particules
+        const pGeometry = new THREE.PlaneGeometry( 1, 1 )
+        const geometry = new THREE.InstancedBufferGeometry()
+
+        let count = 10000
+        let minRadius = 0.5
+        let maxRadius = 1
+
+        geometry.instanceCount = count
+        geometry.setAttribute('position', pGeometry.getAttribute('position'))
+        geometry.index = pGeometry.index
+
+        let pos = new Float32Array(count * 3)
+
+        for (let i = 0; i < count; i++) {
+            let theta = Math.random() * 2 * Math.PI
+
+
+            let r = this.lerp(minRadius, maxRadius, Math.random())
+            let x = r * Math.sin(theta)
+            let y = (Math.random() - 0.5) * 0.05
+            let z = r * Math.cos(theta)
+            pos.set([ x,y,z], i * 3)
+        }
+
+        geometry.setAttribute('pos', new THREE.InstancedBufferAttribute(pos, 3, false))
 
         // Materials
 
         const material = new THREE.ShaderMaterial({
             vertexShader: baseVertexShader,
-            fragmentShader: baseFragmentShader
+            fragmentShader: baseFragmentShader,
+            side: THREE.DoubleSide,
+            uniforms: {
+                uTime: { value: 0 },
+                uResolution: { value: new THREE.Vector4 },
+                uTexture: {value: new THREE.TextureLoader().load(particleTexture) }
+            },
+            transparent: true,
+            depthTest: false,
         })
-        material.color = new THREE.Color(0xff0000)
 
         // Mesh
         const plane = new THREE.Mesh(geometry,material)
@@ -105,7 +148,7 @@ export default class ThreeScene {
             // plane.rotation.y = .5 * elapsedTime
 
             // Update Orbital Controls
-            // controls.update()
+            controls.update()
 
             // Render
             renderer.render(scene, camera)
