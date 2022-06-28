@@ -2,7 +2,7 @@ import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import baseVertexShader from '../shaders/base/vertex.js'
 import baseFragmentShader from '../shaders/base/fragment.js'
-import particleTexture from '../assets/particle.jpg'
+import particleTexture from '../assets/particle_2.jpg'
  
 let instance = null
 
@@ -13,6 +13,9 @@ export default class ThreeScene {
             return instance
         }
         instance = this
+
+        this.camera = new Camera()
+
         this.simpleInit(canvas)
 
     }
@@ -36,9 +39,9 @@ export default class ThreeScene {
         const pGeometry = new THREE.PlaneGeometry( 1, 1 )
         const geometry = new THREE.InstancedBufferGeometry()
 
-        let count = 10000
-        let minRadius = 0.5
-        let maxRadius = 1
+        let count = 30000
+        let minRadius = 1
+        let maxRadius = 4
 
         geometry.instanceCount = count
         geometry.setAttribute('position', pGeometry.getAttribute('position'))
@@ -52,7 +55,7 @@ export default class ThreeScene {
 
             let r = this.lerp(minRadius, maxRadius, Math.random())
             let x = r * Math.sin(theta)
-            let y = (Math.random() - 0.5) * 0.05
+            let y = (Math.random() - 0.5) * 2
             let z = r * Math.cos(theta)
             pos.set([ x,y,z], i * 3)
         }
@@ -116,7 +119,7 @@ export default class ThreeScene {
         const camera = new THREE.PerspectiveCamera(75, sizes.width / sizes.height, 0.1, 100)
         camera.position.x = 0
         camera.position.y = 0
-        camera.position.z = 2
+        camera.position.z = 4
         scene.add(camera)
 
         // Controls

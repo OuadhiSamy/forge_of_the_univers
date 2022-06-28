@@ -15,8 +15,13 @@ export default {
     };
   },
   mounted () {
+    
     this.scene = new ThreeScene(this.$refs.canvas);
-  } 
+  },
+  // clean up
+  // onBeforeUnmount () {
+  //   window.cancelAnimationFrame(animationReq);
+  // }
 }
 
 </script>
