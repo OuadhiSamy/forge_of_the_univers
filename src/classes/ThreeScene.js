@@ -1,5 +1,6 @@
 import * as THREE from 'three'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+import Stats from 'three/examples/jsm/libs/stats.module'
 import baseVertexShader from '../shaders/base/vertex.js'
 import baseFragmentShader from '../shaders/base/fragment.js'
 import particleTexture from '../assets/particle_2.jpg'
@@ -14,8 +15,6 @@ export default class ThreeScene {
         }
         instance = this
 
-        this.camera = new Camera()
-
         this.simpleInit(canvas)
 
     }
@@ -27,6 +26,11 @@ export default class ThreeScene {
     simpleInit (canvas) {
         // Scene
         const scene = new THREE.Scene()
+
+        // Stats
+        const stats = Stats()
+        console.log("stats", stats);
+        document.body.appendChild(stats.dom)
 
         //Object
         const boxGeometry = new THREE.BoxBufferGeometry(1, 1, 1)
@@ -155,6 +159,9 @@ export default class ThreeScene {
 
             // Render
             renderer.render(scene, camera)
+
+            //Stats update
+            stats.update()
 
             // Call tick again on the next frame
             window.requestAnimationFrame(tick)
