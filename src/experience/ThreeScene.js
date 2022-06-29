@@ -1,26 +1,64 @@
 import * as THREE from 'three'
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
+
 import Stats from 'three/examples/jsm/libs/stats.module'
 import baseVertexShader from '../shaders/base/vertex.js'
 import baseFragmentShader from '../shaders/base/fragment.js'
 import particleTexture from '../assets/particle_2.jpg'
+
+// import EventEmitter from './Utils/EventEmitter.js'
+import Sizes from './Utils/Sizes.js'
+import Time from './Utils/Time.js'
+import Camera from './Camera.js'
+import Renderer from './Renderer.js'
  
 let instance = null
 
 export default class ThreeScene {
     constructor(canvas) {
+
         // Singleton
-        if(instance){
+        if(instance) {
             return instance
         }
+
         instance = this
 
-        this.simpleInit(canvas)
+        this.canvas = canvas
+        
+        this.sizes = new Sizes()
+        this.time = new Time()
+        this.scene = new THREE.Scene()
+        this.camera = new Camera()
+        this.renderer = new Renderer()
+        
+
+        // Resize event
+        this.sizes.on('resize', () =>
+        {
+            console.log('A resize occurred')
+        })
+
+        // Time tick event
+        this.time.on('tick', () => {
+            this.update()
+        })
+        
+
+        // this.simpleInit(canvas)
 
     }
 
     lerp (a, b, t) {
         return a * (1 - t ) + b * t
+    }
+
+
+    resize() {
+        this.camera.resize()
+    }
+
+    update() {
+        // this.camera.update()
     }
 
     simpleInit (canvas) {

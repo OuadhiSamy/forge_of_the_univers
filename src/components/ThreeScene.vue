@@ -5,7 +5,7 @@
 </template>
 
 <script>
-import ThreeScene from '../classes/ThreeScene'
+import ThreeScene from '../experience/ThreeScene'
 
 export default {
   name: ThreeScene,
