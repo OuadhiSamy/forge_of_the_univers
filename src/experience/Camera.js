@@ -25,11 +25,11 @@ export default class Camera {
     }
 
     resize() {
-        this.threeScene.aspect = this.sizes.width / this.sizes.height
-        this.threeScene.updateProjectionMatrix()
+        this.instanceCamera.aspect = this.sizes.width / this.sizes.height
+        this.instanceCamera.updateProjectionMatrix()
     }
 
     update() {
-        this.controls.update()
+        this.orbitControls.update()
     }
 }

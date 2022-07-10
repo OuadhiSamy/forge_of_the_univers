@@ -1,15 +1,14 @@
 import * as THREE from 'three'
 
-import Stats from 'three/examples/jsm/libs/stats.module'
-import baseVertexShader from '../shaders/base/vertex.js'
-import baseFragmentShader from '../shaders/base/fragment.js'
-import particleTexture from '../assets/particle_2.jpg'
-
 // import EventEmitter from './Utils/EventEmitter.js'
 import Sizes from './Utils/Sizes.js'
 import Time from './Utils/Time.js'
 import Camera from './Camera.js'
 import Renderer from './Renderer.js'
+import World from './World/World.js'
+import Resources from './Utils/Resources.js'
+import Debug from './Utils/Debug.js'
+import sources from './sources.js'
  
 let instance = null
 
@@ -25,50 +24,79 @@ export default class ThreeScene {
 
         this.canvas = canvas
         
+        this.debug = new Debug()
         this.sizes = new Sizes()
         this.time = new Time()
         this.scene = new THREE.Scene()
+        this.resources = new Resources(sources)
         this.camera = new Camera()
         this.renderer = new Renderer()
+        this.World = new World()
         
 
         // Resize event
         this.sizes.on('resize', () =>
         {
-            console.log('A resize occurred')
+            this.resize()
         })
 
         // Time tick event
         this.time.on('tick', () => {
             this.update()
         })
-        
-
-        // this.simpleInit(canvas)
-
     }
-
-    lerp (a, b, t) {
-        return a * (1 - t ) + b * t
-    }
-
 
     resize() {
         this.camera.resize()
+        this.renderer.resize()
     }
 
     update() {
-        // this.camera.update()
+        this.camera.update()
+        this.renderer.update()
+        this.debug.update()
+
+    }
+
+    destroy() {
+        
+        this.sizes.off('resize')
+        this.time.off('tick')
+
+        this.scene.traverse((child) =>
+        {
+            // Test if it's a mesh
+            if(child instanceof THREE.Mesh)
+            {
+                child.geometry.dispose()
+
+                // Loop through the material properties
+                for(const key in child.material)
+                {
+                    const value = child.material[key]
+
+                    // Test if there is a dispose function
+                    if(value && typeof value.dispose === 'function')
+                    {
+                        value.dispose()
+                    }
+                }
+            }
+        })
+
+        this.camera.orbitControls.dispose()
+        this.renderer.rendererInstance.dispose()
+        
+        if(this.debug.active) {
+            this.debug.destroy()
+        }
+
+        
     }
 
     simpleInit (canvas) {
         // Scene
         const scene = new THREE.Scene()
-
-        // Stats
-        const stats = Stats()
-        console.log("stats", stats);
-        document.body.appendChild(stats.dom)
 
         //Object
         const boxGeometry = new THREE.BoxBufferGeometry(1, 1, 1)
@@ -125,11 +153,7 @@ export default class ThreeScene {
 
         // Lights
 
-        const pointLight = new THREE.PointLight(0xffffff, 0.1)
-        pointLight.position.x = 2
-        pointLight.position.y = 3
-        pointLight.position.z = 4
-        scene.add(pointLight)
+        
 
         /**
          * Sizes
@@ -197,9 +221,6 @@ export default class ThreeScene {
 
             // Render
             renderer.render(scene, camera)
-
-            //Stats update
-            stats.update()
 
             // Call tick again on the next frame
             window.requestAnimationFrame(tick)

@@ -1,3 +1,4 @@
+import * as THREE from 'three'
 import ThreeScene from './ThreeScene.js'
 
 export default class Renderer
@@ -13,28 +14,29 @@ export default class Renderer
         this.initRendererInstance()
     }
 
-    initRendererInstance() {
-        console.log("hey");
-
-
+    initRendererInstance () {
         this.rendererInstance = new THREE.WebGLRenderer({
             canvas: this.canvas,
             antialias: true
         })
 
 
-        // this.rendererInstance.physicallyCorrectLights = true
-        // this.rendererInstance.outputEncoding = THREE.sRGBEncoding
-        // this.rendererInstance.toneMapping = THREE.CineonToneMapping
-        // this.rendererInstance.toneMappingExposure = 1.75
-        // this.rendererInstance.shadowMap.enabled = true
-        // this.rendererInstance.shadowMap.type = THREE.PCFSoftShadowMap
-        // this.rendererInstance.setSize(this.sizes.width, this.sizes.height)
-        // this.rendererInstance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
+        this.rendererInstance.physicallyCorrectLights = true
+        this.rendererInstance.outputEncoding = THREE.sRGBEncoding
+        this.rendererInstance.toneMapping = THREE.CineonToneMapping
+        this.rendererInstance.toneMappingExposure = 1.75
+        this.rendererInstance.shadowMap.enabled = true
+        this.rendererInstance.shadowMap.type = THREE.PCFSoftShadowMap
+        this.rendererInstance.setSize(this.sizes.width, this.sizes.height)
+        this.rendererInstance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
     }
 
-    // resize() {
-    //     this.rendererInstance.setSize(this.sizes.width, this.sizes.height)
-    //     this.rendererInstance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
-    // }
+    resize() {
+        this.rendererInstance.setSize(this.sizes.width, this.sizes.height)
+        this.rendererInstance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
+    }
+
+    update() {
+        this.rendererInstance.render(this.scene, this.camera.instanceCamera)
+    }
 }

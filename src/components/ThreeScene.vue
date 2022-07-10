@@ -15,12 +15,18 @@ export default {
     };
   },
   mounted () {
-    
     this.scene = new ThreeScene(this.$refs.canvas);
   },
+  methods: {
+    stop() {
+      console.log('stop')
+      this.scene.destroy()
+    }
+  },
   // clean up
-  // onBeforeUnmount () {
-  //   window.cancelAnimationFrame(animationReq);
+  // beforeUnmount () {
+  //   console.log('Clear ThreeInstance')
+  //   this.stop()
   // }
 }
 
