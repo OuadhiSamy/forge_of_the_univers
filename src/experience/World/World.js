@@ -38,7 +38,7 @@ export default class World {
         })
 
 
-        this.addParticles() 
+        // this.addParticles() 
     
     }
 

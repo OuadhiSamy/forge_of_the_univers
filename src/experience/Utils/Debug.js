@@ -11,7 +11,7 @@ export default class Debug {
         
         if(this.active) {
            // Stats         
-            this.stats = Stats()
+            this.stats = new Stats()
             document.body.appendChild(this.stats.dom)
             
             this.ui = new Pane()
