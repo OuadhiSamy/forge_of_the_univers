@@ -1,0 +1,27 @@
+*,
+*:after,
+*:before {
+  box-sizing: border-box;
+}
+
+html, body {
+  width: 100%;
+  height: 100vh;
+  color: $white-95;
+  background: $black-90;
+  font-family: 'Maison Neue';
+  font-size: 16px;
+  font-feature-settings: 'ss03' on;
+  letter-spacing: 0.05em;
+  font-weight: 275;
+  font-style: normal;
+}
+
+#webgl-canvas
+{
+    position: fixed;
+    top: 0;
+    left: 0;
+    outline: none;
+    z-index: 0;
+}
