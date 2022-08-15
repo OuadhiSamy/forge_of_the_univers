@@ -1,24 +1,24 @@
 <template>
   <div>
-    <Header />
+    <Navigation />
     <ThreeScene />
   </div>
 </template>
 
 <script>
-import Header from './components/Header.vue'
+import Navigation from './components/Navigation.vue'
 import ThreeScene from './components/ThreeScene.vue'
 
 
 export default {
   components: {
-    Header,
+    Navigation,
     ThreeScene
-  }
+  },
 } 
 
 </script>
 
 <style lang='scss'>
-@import "./styles/index.scss";
+  @import "./styles/index.scss";
 </style>
