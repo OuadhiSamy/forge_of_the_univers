@@ -1,0 +1,18 @@
+[
+    {
+        "title": "type",
+        "filters": ["character", "location", "cult", "organization", "weapon", "armor", "monster", "machine", "object", "other"]
+    }, 
+    {
+        "title": "content",
+        "filters": ["painting", "character sheet", "lore", "poetry", "music", "map"]    
+    },
+    {
+        "title": "school",
+        "filters": ["blood", "life", "death", "fire", "water", "holy"]     
+    },
+    {
+        "title": "rarity",
+        "filters": ["divine", "magistral", "artificat", "curiosity", "commun"]    
+    }
+]

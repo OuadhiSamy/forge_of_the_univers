@@ -1,22 +1,22 @@
 const state = () => ({
-    isMenuOpen: false
+    isFiltersOpen: true
 })
 
 const getters = {
-    getIsMenuOpen: (state) => {
-        return state.isMenuOpen;
+    getIsFiltersOpen: (state) => {
+        return state.isFiltersOpen;
     }
 }
 
 const mutations = {
-    openMenu (state) {3
+    openFilters (state) {3
         console.log('open');
-        state.isMenuOpen = true;
+        state.isFiltersOpen = true;
     }, 
 
-    closeMenu (state) {
+    closeFilters (state) {
         console.log('close');
-        state.isMenuOpen = false;
+        state.isFiltersOpen = false;
     }
 }
 

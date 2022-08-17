@@ -2,19 +2,31 @@
   <div>
     <Navigation />
     <ThreeScene />
+    <Menu v-if="isMenuOpen" />
+    <Filters v-if="isFiltersOpen" />
+    
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import Navigation from './components/Navigation.vue'
 import ThreeScene from './components/ThreeScene.vue'
+import Menu from './components/Menu.vue'
+import Filters from './components/Filters.vue'
 
 
 export default {
   components: {
     Navigation,
-    ThreeScene
+    ThreeScene,
+    Menu,
+    Filters,
   },
+  computed: mapState({
+        isMenuOpen: state => state.menu.isMenuOpen,
+        isFiltersOpen: state => state.filters.isFiltersOpen
+    }),
 } 
 
 </script>

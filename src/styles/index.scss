@@ -1,5 +1,6 @@
-@import './base/reset.scss';
+@import './utils/variables';
 
-@import './utils/variables.scss';
+@import './base/reset';
+@import './base/base';
 
-@import './base/base.scss';
+@import './components/checkbox'
