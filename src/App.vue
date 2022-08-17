@@ -24,9 +24,9 @@ export default {
     Filters,
   },
   computed: mapState({
-        isMenuOpen: state => state.menu.isMenuOpen,
-        isFiltersOpen: state => state.filters.isFiltersOpen
-    }),
+      isMenuOpen: state => state.menu.isMenuOpen,
+      isFiltersOpen: state => state.filters.isFiltersOpen
+  }),
 } 
 
 </script>

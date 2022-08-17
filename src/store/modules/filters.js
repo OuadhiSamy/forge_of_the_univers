@@ -1,5 +1,5 @@
 const state = () => ({
-    isFiltersOpen: true
+    isFiltersOpen: false
 })
 
 const getters = {
