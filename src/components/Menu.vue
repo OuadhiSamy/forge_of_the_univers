@@ -44,6 +44,7 @@ export default {
         justify-content: center;
         align-items: center;
         background: black;
+        z-index: 999;
 
         &::after {
             content: "";
@@ -51,7 +52,6 @@ export default {
             width: 100%;
             height: 100%;
             background: radial-gradient(ellipse at center, rgb(80 54 6 / 18%) 0%,rgb(5, 5, 5) 70%,rgb(0, 0, 0) 100%);
-            // border-radius: 50%;
             position: absolute;
             top: 0; left: 0;
             z-index: 0;

@@ -30,7 +30,7 @@ export default class ThreeScene {
         this.resources = new Resources(sources)
         this.camera = new Camera()
         this.renderer = new Renderer()
-        this.World = new World()
+        this.world = new World()
         
 
         // Resize event
@@ -53,6 +53,7 @@ export default class ThreeScene {
     update() {
         this.camera.update()
         this.renderer.update()
+        this.world.update()
 
         if(this.debug.active) {
             this.debug.update()

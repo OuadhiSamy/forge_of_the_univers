@@ -15,7 +15,7 @@ export default {
     };
   },
   mounted () {
-    // this.scene = new ThreeScene(this.$refs.canvas);
+    this.scene = new ThreeScene(this.$refs.canvas);
   },
   methods: {
     stop() {

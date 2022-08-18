@@ -73,5 +73,10 @@ export default {
                 transform: translate(0, -50%);
             }
         }
+
+        &__menu {
+            // pointer-events: none;
+            // opacity: 0;
+        }
     }
 </style>
