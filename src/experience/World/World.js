@@ -112,10 +112,41 @@ export default class World {
     }
 
     addConceptItems() {
+        const amount = 5
+		const count = Math.pow( amount, 3 );
+        
         const sphereGeometry = new THREE.SphereBufferGeometry( 1, 32, 16 )
         const sphereMaterial = new THREE.MeshStandardMaterial({roughness: 0})
-        this.sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
-        this.sphere.position.set(60, 2, 0)
+        this.sphere = new THREE.InstancedMesh(sphereGeometry, sphereMaterial, count)
+
+        
+        let i = 0;
+        const offset = ( amount - 10 ) / 2 ;
+
+        const matrix = new THREE.Matrix4();
+
+        for ( let x = 0; x < amount; x ++ ) {
+
+            for ( let y = 0; y < amount; y ++ ) {
+
+                for ( let z = 0; z < amount; z ++ ) {
+
+                    matrix.setPosition( offset - x * 20, offset - y * 20, offset - z * 20 );
+
+
+                    this.sphere.setMatrixAt( i, matrix );
+
+                    i ++;
+
+                }
+
+            }
+
+        }
+
+        console.log(this.sphere)
+
+        // this.sphere.position.set(60, 2, 0)
         this.scene.add(this.sphere)
 
         if(this.debug.active) {
@@ -138,13 +169,17 @@ export default class World {
     }
 
     onPointerClick() {
-        if(this.hoveredSphere) this.camera.moveCameraTo(this.hoveredSphere.object, 0)
+        if(this.hoveredSphere) this.camera.moveCameraTo(this.hoveredSphere, 0)
         else console.log('No Object hovered')
     }
 
     update() {
-        this.raycaster.setFromCamera( this.pointer, this.camera.instanceCamera );
-        const intersects = this.raycaster.intersectObject( this.sphere );
+        this.raycaster.setFromCamera(this.pointer, this.camera.instanceCamera);
+        const intersects = this.raycaster.intersectObject(this.sphere);
+
+        if ( intersects.length > 0 ) {
+            // console.log(intersects[0].point)
+        }
 
         intersects.length > 0 ? this.hoveredSphere = intersects[0] : this.hoveredSphere = null
     }

@@ -11,7 +11,8 @@ export default class Camera {
         this.canvas = this.threeScene.canvas
         this.debug = this.threeScene.debug
 
-
+        this.lookAtPoint = null
+        this.focusedMesh = null
 
         this.initInstanceCamera()
         this.initOrbitControls()
@@ -38,13 +39,6 @@ export default class Camera {
             this.cameraFolder.addInput(this.instanceCamera.position, 'z', { label: 'PosZ', min: 0, max: 400 }).on('change', e => this.instanceCamera.position.z = e.value)
             this.cameraFolder.addInput(this.instanceCamera, 'far', { label: 'Far', min: 1, max: 5000 }).on('change', e => {this.instanceCamera.far = e.value, this.instanceCamera.updateProjectionMatrix()})
         }
-
-        if(this.debug.active) {
-            this.lookAtFolder = this.debug.ui.addFolder({title: 'LookAt', expanded: true})
-            this.lookAtFolder.addInput(this.lookAtPoint.position, 'x', { label: 'PosX', min: 0, max: 400 }).on('change', e => this.lookAtPoint.position.x = e.value)
-            this.lookAtFolder.addInput(this.lookAtPoint.position, 'y', { label: 'PosY', min: 0, max: 400 }).on('change', e => this.lookAtPoint.position.y = e.value)
-            this.lookAtFolder.addInput(this.lookAtPoint.position, 'z', { label: 'PosZ', min: 0, max: 400 }).on('change', e => this.lookAtPoint.position.z = e.value)
-        }
     }
 
     initOrbitControls() {
@@ -54,15 +48,22 @@ export default class Camera {
 
     moveCameraTo(mesh) {
         
-        // Create a line between to point
-        // const prout = 
-        const line = new THREE.Line3(this.instanceCamera.position, mesh.position)
-        const positionInLine = line.at(0.95, new THREE.Vector3(1, 1, 1))
+        console.log('Mesh A', this.focusedMesh, mesh)
+        if(this.focusedMesh === null || this.focusedMesh.instanceId !== mesh.instanceId) {
 
-        gsap.to(this.lookAtPoint.position, { x: mesh.position.x, y: mesh.position.y, z: mesh.position.z, duration: 1 })
-        gsap
-            .to(this.instanceCamera.position, { x: positionInLine.x, y: positionInLine.y, z: positionInLine.z, duration: 2 })
-            .then(() => this.orbitControls.target.set(...this.lookAtPoint.position))
+            this.focusedMesh = mesh
+            console.log(this.focusedMesh.point);
+
+            const line = new THREE.Line3(this.instanceCamera.position, this.focusedMesh.point)
+            const positionInLine = line.at(0.95, new THREE.Vector3(1, 1, 1))
+
+            gsap.to(this.lookAtPoint.position, { x: this.focusedMesh.point.x, y: this.focusedMesh.point.y, z: this.focusedMesh.point.z, duration: 0.8 })
+            gsap
+                .to(this.instanceCamera.position, { x: positionInLine.x, y: positionInLine.y, z: positionInLine.z, duration: 1 })
+                .then(() => this.orbitControls.target.set(...this.lookAtPoint.position))
+        }
+
+        
     }
 
     resize() {
