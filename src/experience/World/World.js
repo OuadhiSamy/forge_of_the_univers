@@ -17,7 +17,7 @@ export default class World {
         this.debug = this.threeScene.debug
         this.camera = this.threeScene.camera
         
-        this.scene.background = new THREE.Color( 0x080808 );
+        // this.scene.background = new THREE.Color( 0x080808 );
 
         this.resources.on('ready', () => {
             //Lights
