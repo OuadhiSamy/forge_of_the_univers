@@ -10,5 +10,19 @@ export default [
             '../src/assets/environmentMap/pz.jpg',
             '../src/assets/environmentMap/nz.jpg',
         ]
+    },
+    {
+        name: 'path',
+        type: 'gltfModel',
+        path: [
+            '../src/assets/lightpath/ring_simple.glb',
+        ],
+    },
+    {
+        name: 'ringTexture',
+        type: 'texture',
+        path: [
+            '../src/assets/lightpath/ring_bake_cc.png',
+        ],
     }
 ]

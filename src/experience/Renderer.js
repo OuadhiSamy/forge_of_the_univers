@@ -29,6 +29,7 @@ export default class Renderer
         this.rendererInstance.shadowMap.type = THREE.PCFSoftShadowMap
         this.rendererInstance.setSize(this.sizes.width, this.sizes.height)
         this.rendererInstance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
+        this.rendererInstance.outputEncoding = THREE.sRGBEncoding
     }
 
     resize() {

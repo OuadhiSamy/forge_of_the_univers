@@ -11,20 +11,22 @@ import particleTexture from '../../assets/particle_2.jpg'
 export default class World {
     constructor() {
         this.threeScene = new ThreeScene
+        this.renderer = this.threeScene.renderer.rendererInstance
         this.scene = this.threeScene.scene
         this.resources = this.threeScene.resources
         this.debug = this.threeScene.debug
         this.camera = this.threeScene.camera
         
-        this.scene.background = new THREE.Color( 0x121212 );
+        this.scene.background = new THREE.Color( 0x080808 );
 
         this.resources.on('ready', () => {
             //Lights
             this.environment = new Environment()
+            this.addRingsModel()
         })
         
         this.addBox()
-        this.addTorus()
+        // this.addTorus()
         this.addConceptItems()
         // this.addParticles() 
     
@@ -111,42 +113,36 @@ export default class World {
         }
     }
 
+    addRingsModel() {
+        this.ringsModel = this.resources.items.path.scene
+        const ringsTexture = this.resources.items.ringTexture
+        ringsTexture.encoding = THREE.sRGBEncoding
+        ringsTexture.anisotropy = this.renderer.capabilities.getMaxAnisotropy();
+        const ringMaterial = new THREE.MeshBasicMaterial(
+            {
+                map: this.resources.items.ringTexture, 
+                side: THREE.DoubleSide, 
+                roughness: 0.8, 
+                transparent: true
+            }
+        )
+        this.ringsModel.traverse((child) => {child.material = ringMaterial})
+        this.ringsModel.scale.set(50, 0, 50)
+        this.scene.add(this.ringsModel)
+
+        if(this.debug.active) {
+            this.ringsModelFolder = this.debug.ui.addFolder({title: 'RingsModel', expanded: false})
+            this.ringsModelFolder.addInput(this.ringsModel.scale, 'x', { label: 'Width', min: 1, max: 200 }).on('change', e => this.ringsModel.scale.x = e.value)
+            this.ringsModelFolder.addInput(this.ringsModel.scale, 'y', { label: 'Height', min: 1, max: 200 }).on('change', e => this.ringsModel.scale.y = e.value)
+            this.ringsModelFolder.addInput(this.ringsModel.scale, 'z', { label: 'Depth', min: 1, max: 200 }).on('change', e => this.ringsModel.scale.z = e.value)
+        }
+    }
+
     addConceptItems() {
-        const amount = 5
-		const count = Math.pow( amount, 3 );
-        
         const sphereGeometry = new THREE.SphereBufferGeometry( 1, 32, 16 )
         const sphereMaterial = new THREE.MeshStandardMaterial({roughness: 0})
-        this.sphere = new THREE.InstancedMesh(sphereGeometry, sphereMaterial, count)
-
-        
-        let i = 0;
-        const offset = ( amount - 10 ) / 2 ;
-
-        const matrix = new THREE.Matrix4();
-
-        for ( let x = 0; x < amount; x ++ ) {
-
-            for ( let y = 0; y < amount; y ++ ) {
-
-                for ( let z = 0; z < amount; z ++ ) {
-
-                    matrix.setPosition( offset - x * 20, offset - y * 20, offset - z * 20 );
-
-
-                    this.sphere.setMatrixAt( i, matrix );
-
-                    i ++;
-
-                }
-
-            }
-
-        }
-
-        console.log(this.sphere)
-
-        // this.sphere.position.set(60, 2, 0)
+        this.sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
+        this.sphere.position.set(60, 2, 0)
         this.scene.add(this.sphere)
 
         if(this.debug.active) {
@@ -177,10 +173,6 @@ export default class World {
         this.raycaster.setFromCamera(this.pointer, this.camera.instanceCamera);
         const intersects = this.raycaster.intersectObject(this.sphere);
 
-        if ( intersects.length > 0 ) {
-            // console.log(intersects[0].point)
-        }
-
-        intersects.length > 0 ? this.hoveredSphere = intersects[0] : this.hoveredSphere = null
+        intersects.length > 0 ? this.hoveredSphere = intersects[0].object : this.hoveredSphere = null
     }
  }

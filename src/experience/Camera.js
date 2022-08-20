@@ -20,14 +20,14 @@ export default class Camera {
 
     initInstanceCamera() {
         this.instanceCamera = new THREE.PerspectiveCamera(45, this.sizes.width / this.sizes.height, 0.1, 2000)
-        this.instanceCamera.position.set(0, 24, 130)
+        this.instanceCamera.position.set(0, 86, 255)
         
         this.lookAtPoint = new THREE.Mesh(
-            new THREE.BoxBufferGeometry(2, 2, 2),
+            new THREE.BoxBufferGeometry(0.5, 0.5, 0.5),
             new THREE.MeshBasicMaterial()
         )
 
-        this.lookAtPoint.visible = false
+        // this.lookAtPoint.visible = false
 
     
         this.scene.add(this.instanceCamera, this.lookAtPoint)
@@ -48,16 +48,16 @@ export default class Camera {
 
     moveCameraTo(mesh) {
         
-        console.log('Mesh A', this.focusedMesh, mesh)
-        if(this.focusedMesh === null || this.focusedMesh.instanceId !== mesh.instanceId) {
+        console.log(mesh);
+        if(this.focusedMesh === null || this.focusedMesh.id !== mesh.id) {
 
             this.focusedMesh = mesh
-            console.log(this.focusedMesh.point);
 
-            const line = new THREE.Line3(this.instanceCamera.position, this.focusedMesh.point)
+
+            const line = new THREE.Line3(this.instanceCamera.position, this.focusedMesh.position)
             const positionInLine = line.at(0.95, new THREE.Vector3(1, 1, 1))
 
-            gsap.to(this.lookAtPoint.position, { x: this.focusedMesh.point.x, y: this.focusedMesh.point.y, z: this.focusedMesh.point.z, duration: 0.8 })
+            gsap.to(this.lookAtPoint.position, { x: this.focusedMesh.position.x, y: this.focusedMesh.position.y, z: this.focusedMesh.position.z, duration: 0.8 })
             gsap
                 .to(this.instanceCamera.position, { x: positionInLine.x, y: positionInLine.y, z: positionInLine.z, duration: 1 })
                 .then(() => this.orbitControls.target.set(...this.lookAtPoint.position))
