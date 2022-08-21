@@ -1,5 +1,6 @@
 const state = () => ({
     conceptList: [],
+    isConceptSelected: false,
     currentConcept: null,
 })
 
