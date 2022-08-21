@@ -52,12 +52,13 @@ export default {
         align-items: center;
         width: 100%;
         padding: 0 48px;
-        z-index: 1;
+        z-index: 2;
 
         &__logo {
             width: 177px;
             height: 57px;
             background: grey;
+            cursor: pointer;
         }
 
         &__filter {
@@ -75,8 +76,7 @@ export default {
         }
 
         &__menu {
-            // pointer-events: none;
-            // opacity: 0;
+            cursor: pointer;
         }
     }
 </style>

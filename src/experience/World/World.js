@@ -13,7 +13,7 @@ import EventEmitter from '../Utils/EventEmitter';
 export default class World extends EventEmitter {
     constructor(conceptList) {
         super()
-        
+
         this.threeScene = new ThreeScene
         this.renderer = this.threeScene.renderer.rendererInstance
         this.scene = this.threeScene.scene
@@ -142,6 +142,14 @@ export default class World extends EventEmitter {
             this.ringsModelFolder.addInput(this.ringsModel.scale, 'y', { label: 'Height', min: 1, max: 200 }).on('change', e => this.ringsModel.scale.y = e.value)
             this.ringsModelFolder.addInput(this.ringsModel.scale, 'z', { label: 'Depth', min: 1, max: 200 }).on('change', e => this.ringsModel.scale.z = e.value)
         }
+
+        const innerRing = this.ringsModel.clone()
+        innerRing.scale.set(8, 8, 8)
+        innerRing.position.y = -16
+
+        this.scene.add(innerRing)
+        
+        console.log(innerRing)
     }
 
     addConceptItems() {

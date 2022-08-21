@@ -8,6 +8,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "smooth-scrollbar": "^8.7.5",
     "split-text-js": "^1.0.3",
     "three": "^0.141.0",
     "tweakpane": "^3.1.0",

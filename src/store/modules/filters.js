@@ -9,7 +9,7 @@ const getters = {
 }
 
 const mutations = {
-    openFilters (state) {3
+    openFilters (state) {
         console.log('open');
         state.isFiltersOpen = true;
     }, 

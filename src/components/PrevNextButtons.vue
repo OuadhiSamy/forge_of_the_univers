@@ -17,7 +17,7 @@ import {gsap, Expo } from 'gsap'
 export default {
     name: 'prev-next-buttons',
     computed: mapState({
-      isConceptSelected: state => state.concepts.isConceptSelected,
+      isConceptFocused: state => state.concepts.isConceptFocused,
     }),
     data() {
         return {
@@ -30,7 +30,7 @@ export default {
         this.nextText = new SplitTextJS(this.$refs.nextText).chars    
     },
     watch: {
-        isConceptSelected(payload) {
+        isConceptFocused(payload) {
             payload === true ? this.showButtons() : this.hideButtons()
         }
     },
@@ -61,7 +61,7 @@ export default {
                 this.prevText,
                 {
                     duration: 1, 
-                    ease: Expo.easeOut,
+                    ease: Expo.easeIn,
                     y: 0, 
                     stagger: {each: 0.08, from:"end"},
                 }
@@ -71,7 +71,7 @@ export default {
                 this.nextText,
                 {
                     duration: 1, 
-                    ease: Expo.easeOut,
+                    ease: Expo.easeIn,
                     y: 0, 
                     stagger: {each: 0.08, from:"start"}, 
                 }

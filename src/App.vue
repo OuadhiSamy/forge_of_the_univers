@@ -4,7 +4,8 @@
     <ThreeScene />
     <Menu v-if="isMenuOpen" />
     <Filters v-if="isFiltersOpen" />
-    <Prev-next-buttons />
+    <PrevNextButtons />
+    <ConceptDetail v-if="isConceptSelected" />
   </div>
 </template>
 
@@ -15,6 +16,7 @@ import ThreeScene from './components/ThreeScene.vue'
 import Menu from './components/Menu.vue'
 import Filters from './components/Filters.vue'
 import PrevNextButtons from './components/PrevNextButtons.vue'
+import ConceptDetail from './components/ConceptDetail.vue'
 
 
 export default {
@@ -24,10 +26,12 @@ export default {
     Menu,
     Filters,
     PrevNextButtons,
+    ConceptDetail,
   },
   computed: mapState({
       isMenuOpen: state => state.menu.isMenuOpen,
-      isFiltersOpen: state => state.filters.isFiltersOpen
+      isFiltersOpen: state => state.filters.isFiltersOpen,
+      isConceptSelected: state => state.concepts.isConceptSelected
   }),
 } 
 

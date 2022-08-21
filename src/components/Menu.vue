@@ -53,7 +53,8 @@ export default {
             height: 100%;
             background: radial-gradient(ellipse at center, rgb(80 54 6 / 18%) 0%,rgb(5, 5, 5) 70%,rgb(0, 0, 0) 100%);
             position: absolute;
-            top: 0; left: 0;
+            top: 0; 
+            left: 0;
             z-index: 0;
         }
 
@@ -122,30 +123,30 @@ export default {
             }
         }
 
-        &__background-circles {
-            z-index: 1;
+        // &__background-circles {
+        //     z-index: 1;
 
-            div:nth-child(1) {
-                position: absolute;
-                bottom: -70%;
-                left: -25%;
-                width: 2000px;
-                height: 2000px;
-                opacity: 0.10;
-                background: radial-gradient(32.1% 45.88% at 50% 50%, #715F00 0%, rgba(18, 18, 18, 0) 100%);
-                transform: rotate(20.7deg);
-            }
+        //     div:nth-child(1) {
+        //         position: absolute;
+        //         bottom: -70%;
+        //         left: -25%;
+        //         width: 2000px;
+        //         height: 2000px;
+        //         opacity: 0.05;
+        //         background: radial-gradient(32.1% 45.88% at 50% 50%, #715F00 0%, rgba(18, 18, 18, 0) 100%);
+        //         transform: rotate(20.7deg);
+        //     }
 
-            div:nth-child(2) {
-                position: absolute;
-                right: -30%;
-                top: -45%;
-                width: 2000px;
-                height: 2000px;
-                background: radial-gradient(40.23% 45.88% at 50% 50%, #713D00 0%, rgba(18, 18, 18, 0) 100%);
-                opacity: 0.10;
-                transform: rotate(-31.81deg);
-            } 
-        }
+        //     div:nth-child(2) {
+        //         position: absolute;
+        //         right: -30%;
+        //         top: -45%;
+        //         width: 2000px;
+        //         height: 2000px;
+        //         background: radial-gradient(40.23% 45.88% at 50% 50%, #713D00 0%, rgba(18, 18, 18, 0) 100%);
+        //         opacity: 0.05;
+        //         transform: rotate(-31.81deg);
+        //     } 
+        // }
     }
 </style>

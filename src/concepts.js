@@ -16,5 +16,23 @@ export default [
         trendingIndice: 4,
         mainColor: 0xe3b24f,
         mainImage: '', 
-    }
+    },
+    {
+        id: 2,
+        name: 'Cult of the blood Wolf',
+        position: {x: 0, y: 5, z: 100 },
+        size: {x: 3, y: 3, z: 3 },
+        trendingIndice: 4,
+        mainColor: 0x850505,
+        mainImage: '', 
+    },
+    {
+        id: 3,
+        name: 'Dollye Pooe',
+        position: {x: -100, y: 5, z: 0 },
+        size: {x: 3, y: 3, z: 3 },
+        trendingIndice: 4,
+        mainColor: 0xf5edae,
+        mainImage: '', 
+    },
 ]
