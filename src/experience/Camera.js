@@ -2,9 +2,12 @@ import * as THREE from 'three'
 import gsap from 'gsap'
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
 import ThreeScene from './ThreeScene'
+import EventEmitter from './Utils/EventEmitter'
 
-export default class Camera {
+export default class Camera extends EventEmitter {
     constructor () {
+        super()
+        
         this.threeScene = new ThreeScene ()
         this.sizes = this.threeScene.sizes
         this.scene = this.threeScene.scene
@@ -19,7 +22,7 @@ export default class Camera {
     }
 
     initInstanceCamera() {
-        this.instanceCamera = new THREE.PerspectiveCamera(45, this.sizes.width / this.sizes.height, 0.1, 2000)
+        this.instanceCamera = new THREE.PerspectiveCamera(95, this.sizes.width / this.sizes.height, 0.1, 2000)
         this.instanceCamera.position.set(0, 86, 255)
         
         this.lookAtPoint = new THREE.Mesh(
@@ -27,7 +30,7 @@ export default class Camera {
             new THREE.MeshBasicMaterial()
         )
 
-        // this.lookAtPoint.visible = false
+        this.lookAtPoint.visible = false
 
     
         this.scene.add(this.instanceCamera, this.lookAtPoint)
@@ -48,11 +51,12 @@ export default class Camera {
 
     moveCameraTo(mesh) {
         
+        this.trigger('conceptSelected')
+
         console.log(mesh);
         if(this.focusedMesh === null || this.focusedMesh.id !== mesh.id) {
 
             this.focusedMesh = mesh
-
 
             const line = new THREE.Line3(this.instanceCamera.position, this.focusedMesh.position)
             const positionInLine = line.at(0.95, new THREE.Vector3(1, 1, 1))

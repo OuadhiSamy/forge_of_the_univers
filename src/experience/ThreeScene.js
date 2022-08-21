@@ -12,7 +12,7 @@ import sources from './sources.js'
 let instance = null
 
 export default class ThreeScene {
-    constructor(canvas) {
+    constructor(canvas, conceptArray) {
 
         // Singleton
         if(instance) {
@@ -30,19 +30,20 @@ export default class ThreeScene {
         this.resources = new Resources(sources)
         this.camera = new Camera()
         this.renderer = new Renderer()
-        this.world = new World()
-        
+        this.world = new World(conceptArray)        
 
         // Resize event
-        this.sizes.on('resize', () =>
+        this.sizes.on('resize', (e) =>
         {
             this.resize()
+            
         })
 
         // Time tick event
         this.time.on('tick', () => {
             this.update()
         })
+
     }
 
     resize() {

@@ -6,20 +6,20 @@
 
 <script>
 import ThreeScene from '../experience/ThreeScene'
+import concepts from '../concepts.js'
 
 export default {
-  name: ThreeScene,
+  name: 'ThreeScene',
   data () {
     return {
       scene: null,
     };
   },
   mounted () {
-    this.scene = new ThreeScene(this.$refs.canvas);
+    // this.scene = new ThreeScene(this.$refs.canvas, concepts);
   },
   methods: {
     stop() {
-      console.log('stop')
       this.scene.destroy()
     }
   },

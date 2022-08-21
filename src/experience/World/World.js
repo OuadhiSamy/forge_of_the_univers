@@ -1,21 +1,27 @@
 import * as THREE from 'three'
 import ThreeScene from "../ThreeScene";
 import Environment from './Environment';
+import Concept from './Concept'
 
 import * as _Math from '../Utils/Math.js'
 
 import baseVertexShader from '../../shaders/base/vertex.js'
 import baseFragmentShader from '../../shaders/base/fragment.js'
 import particleTexture from '../../assets/particle_2.jpg'
+import EventEmitter from '../Utils/EventEmitter';
 
-export default class World {
-    constructor() {
+export default class World extends EventEmitter {
+    constructor(conceptList) {
+        super()
+        
         this.threeScene = new ThreeScene
         this.renderer = this.threeScene.renderer.rendererInstance
         this.scene = this.threeScene.scene
         this.resources = this.threeScene.resources
         this.debug = this.threeScene.debug
         this.camera = this.threeScene.camera
+        this.concepts = conceptList
+        this.conceptsMesh = []
         
         // this.scene.background = new THREE.Color( 0x080808 );
 
@@ -25,7 +31,7 @@ export default class World {
             this.addRingsModel()
         })
         
-        this.addBox()
+        // this.addBox()
         // this.addTorus()
         this.addConceptItems()
         // this.addParticles() 
@@ -139,18 +145,19 @@ export default class World {
     }
 
     addConceptItems() {
-        const sphereGeometry = new THREE.SphereBufferGeometry( 1, 32, 16 )
-        const sphereMaterial = new THREE.MeshStandardMaterial({roughness: 0})
-        this.sphere = new THREE.Mesh(sphereGeometry, sphereMaterial)
-        this.sphere.position.set(60, 2, 0)
-        this.scene.add(this.sphere)
+        // if(this.debug.active) {
+        //     this.sphereFolder = this.debug.ui.addFolder({title: 'Sphere', expanded: true})
+        //     this.sphereFolder.addInput(this.sphere.position, 'x', { label: 'PosX', min: -200, max: 200, step: 0.1 }).on('change', e => this.sphere.position.x = e.value)
+        //     this.sphereFolder.addInput(this.sphere.position, 'y', { label: 'PosY', min: -200, max: 200 }).on('change', e => this.sphere.position.y = e.value)
+        //     this.sphereFolder.addInput(this.sphere.position, 'z', { label: 'PosZ', min: -200, max: 200 }).on('change', e => this.sphere.position.z = e.value)
+        // }
 
-        if(this.debug.active) {
-            this.sphereFolder = this.debug.ui.addFolder({title: 'Sphere', expanded: true})
-            this.sphereFolder.addInput(this.sphere.position, 'x', { label: 'PosX', min: -200, max: 200, step: 0.1 }).on('change', e => this.sphere.position.x = e.value)
-            this.sphereFolder.addInput(this.sphere.position, 'y', { label: 'PosY', min: -200, max: 200 }).on('change', e => this.sphere.position.y = e.value)
-            this.sphereFolder.addInput(this.sphere.position, 'z', { label: 'PosZ', min: -200, max: 200 }).on('change', e => this.sphere.position.z = e.value)
+        for(const el of this.concepts) {
+            const concept = new Concept(el)
+            this.conceptsMesh.push(concept.mesh)
         }
+
+        console.log(this.conceptsMesh)
 
         document.addEventListener( 'pointermove', (event) => this.onPointerMove(event) );
         document.addEventListener( 'click', (event) => this.onPointerClick(event) );
@@ -165,13 +172,15 @@ export default class World {
     }
 
     onPointerClick() {
-        if(this.hoveredSphere) this.camera.moveCameraTo(this.hoveredSphere, 0)
+        if(this.hoveredSphere) {
+            this.camera.moveCameraTo(this.hoveredSphere, 0)
+        }
         else console.log('No Object hovered')
     }
 
     update() {
         this.raycaster.setFromCamera(this.pointer, this.camera.instanceCamera);
-        const intersects = this.raycaster.intersectObject(this.sphere);
+        const intersects = this.raycaster.intersectObjects(this.conceptsMesh);
 
         intersects.length > 0 ? this.hoveredSphere = intersects[0].object : this.hoveredSphere = null
     }
