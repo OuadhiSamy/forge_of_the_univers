@@ -6,17 +6,23 @@ const state = () => ({
 })
 
 const getters = {
-    getConceptList: (state) => {
-        return state.conceptList;
-    }
+    getConceptList (state) {
+        return state.conceptList
+    },
 }
 
 const mutations = {
-    openConceptDetail(state) {
-        state.isConceptSelected = true;
+    setConceptList(state, payload) {
+        state.conceptList = payload
+    },
+    setCurrentConcept(state, payload) {
+        state.currentConcept = state.conceptList.filter(concept => concept.id === payload);
+    },
+    openConceptDetail(state) { 
+        state.isConceptSelected = true
     },
     closeConceptDetail(state) {
-        state.isConceptSelected = false;
+        state.isConceptSelected = false
     }
 }
 

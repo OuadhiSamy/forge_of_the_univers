@@ -9,7 +9,7 @@ const getters = {
 }
 
 const mutations = {
-    openMenu (state) {3
+    openMenu (state) {
         console.log('open');
         state.isMenuOpen = true;
     }, 

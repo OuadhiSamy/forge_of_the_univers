@@ -16,9 +16,17 @@ export default {
     };
   },
   mounted () {
-    this.scene = new ThreeScene(this.$refs.canvas, concepts);
+    this.$store.commit('concepts/setConceptList', concepts)
+    this.scene = new ThreeScene(this.$refs.canvas, concepts)
+    document.querySelector("#webgl-canvas").addEventListener("myevent", (event) => {
+      this.$store.commit('concepts/setCurrentConcept', event.detail.conceptId)
+    });
+
   },
   methods: {
+    log(e) {
+      console.log(e)
+    },
     stop() {
       this.scene.destroy()
     }

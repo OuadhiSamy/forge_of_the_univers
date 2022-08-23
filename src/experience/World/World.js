@@ -148,8 +148,6 @@ export default class World extends EventEmitter {
         innerRing.position.y = -16
 
         this.scene.add(innerRing)
-        
-        console.log(innerRing)
     }
 
     addConceptItems() {
@@ -164,8 +162,6 @@ export default class World extends EventEmitter {
             const concept = new Concept(el)
             this.conceptsMesh.push(concept.mesh)
         }
-
-        console.log(this.conceptsMesh)
 
         document.addEventListener( 'pointermove', (event) => this.onPointerMove(event) );
         document.addEventListener( 'click', (event) => this.onPointerClick(event) );

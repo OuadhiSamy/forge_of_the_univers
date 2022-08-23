@@ -12,10 +12,13 @@ export default class Concept {
     }
 
     addConceptToScene() {
+        
         const geometry = new THREE.SphereBufferGeometry( 1, 32, 32 )
         const material = new THREE.MeshBasicMaterial({color: new THREE.Color(this.conceptData.mainColor)})
     
         this.mesh = new THREE.Mesh(geometry, material)
+        this.mesh.userData.conceptId = this.conceptData.id
+        
         this.mesh.position.set(
             this.conceptData.position.x, 
             this.conceptData.position.y, 

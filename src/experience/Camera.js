@@ -50,10 +50,18 @@ export default class Camera extends EventEmitter {
     }
 
     moveCameraTo(mesh) {
-        
-        this.trigger('conceptSelected')
 
-        console.log(mesh);
+        console.log(mesh)
+
+        const myEvent = new CustomEvent("myevent", {
+            detail: {conceptId: mesh.userData.conceptId},
+            bubbles: true,
+            cancelable: true,
+            composed: false,
+        });
+
+        document.querySelector("#webgl-canvas").dispatchEvent(myEvent);
+
         if(this.focusedMesh === null || this.focusedMesh.id !== mesh.id) {
 
             this.focusedMesh = mesh
