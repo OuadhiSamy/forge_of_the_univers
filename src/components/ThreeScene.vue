@@ -1,6 +1,7 @@
 <template>
   <div>
     <canvas id="webgl-canvas" ref="canvas"></canvas>
+    <div class="vignette"></div>
   </div>
 </template>
 
@@ -39,3 +40,15 @@ export default {
 }
 
 </script>
+
+<style lang="scss">
+  .vignette {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    box-shadow: 0 0 200px 100px rgba(0,0,0, 0.9) inset;
+    pointer-events: none;
+  }
+</style>

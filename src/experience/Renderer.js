@@ -2,7 +2,9 @@ import * as THREE from 'three'
 import ThreeScene from './ThreeScene.js'
 import { EffectComposer } from 'three/examples/jsm/postprocessing/EffectComposer.js'
 import { RenderPass } from 'three/examples/jsm/postprocessing/RenderPass.js'
+import { ShaderPass } from 'three/examples/jsm/postprocessing/ShaderPass.js'
 import { UnrealBloomPass } from 'three/examples/jsm/postprocessing/UnrealBloomPass.js'
+import { SSAARenderPass } from 'three/examples/jsm/postprocessing/SSAARenderPass.js'
 
 export default class Renderer
 {
@@ -28,9 +30,12 @@ export default class Renderer
 
         this.rendererInstance = new THREE.WebGLRenderer({
             canvas: this.canvas,
-            antialias: true
+            antialias: true,
+            alpha: true
         })
 
+        // Renderer
+        this.rendererInstance.setClearColor(0xffffff, 0);
         this.rendererInstance.physicallyCorrectLights = true
         this.rendererInstance.outputEncoding = THREE.sRGBEncoding
         this.rendererInstance.toneMapping = THREE.ReinhardToneMapping
@@ -41,15 +46,24 @@ export default class Renderer
         this.rendererInstance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
         this.rendererInstance.outputEncoding = THREE.sRGBEncoding
 
-        const renderScene = new RenderPass(this.scene, this.camera.instanceCamera);
+        // Passes
+        const renderScene = new RenderPass(this.scene, this.camera.instanceCamera)
+        
+        // BloomPass
         const bloomPass = new UnrealBloomPass( new THREE.Vector2(this.sizes.width, this.sizes.height), 1.5, 0.4, 0.85 );
-        bloomPass.threshold = params.bloomThreshold;
-        bloomPass.strength = params.bloomStrength;
-        bloomPass.radius = params.bloomRadius;
+        bloomPass.threshold = params.bloomThreshold
+        bloomPass.strength = params.bloomStrength
+        bloomPass.radius = params.bloomRadius
 
-        this.composer = new EffectComposer(this.rendererInstance);
-        this.composer.addPass(renderScene);
-        this.composer.addPass(bloomPass);
+        // SSAAPass
+        const ssaaRenderPass = new SSAARenderPass(this.scene, this.camera.instanceCamera)
+        ssaaRenderPass.sampleLevel = 4        
+
+        this.composer = new EffectComposer(this.rendererInstance)
+        this.composer.addPass(renderScene)
+        this.composer.addPass(ssaaRenderPass)
+        this.composer.addPass(bloomPass)
+        
 
 
         if(this.debug.active) {
@@ -64,6 +78,7 @@ export default class Renderer
 
     resize() {
         this.rendererInstance.setSize(this.sizes.width, this.sizes.height)
+        this.composer.setSize(this.sizes.width, this.sizes.height)
         this.rendererInstance.setPixelRatio(Math.min(this.sizes.pixelRatio, 2))
     }
 

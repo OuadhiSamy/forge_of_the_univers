@@ -7,6 +7,8 @@ import * as _Math from '../Utils/Math.js'
 
 import baseVertexShader from '../../shaders/base/vertex.js'
 import baseFragmentShader from '../../shaders/base/fragment.js'
+import lightBeamVertexShader from '../../shaders/lightBeam/vertex.js'
+import lightBeamFragmentShader from '../../shaders/lightBeam/fragment.js'
 import particleTexture from '../../assets/particle_2.jpg'
 import EventEmitter from '../Utils/EventEmitter';
 
@@ -23,17 +25,15 @@ export default class World extends EventEmitter {
         this.concepts = conceptList
         this.conceptsMesh = []
         
-        // this.scene.background = new THREE.Color( 0x080808 );
-
         this.resources.on('ready', () => {
             //Lights
             this.environment = new Environment()
-            this.addRingsModel()
+            this.addScene()
+            this.addConceptItems()
         })
         
         // this.addBox()
         // this.addTorus()
-        this.addConceptItems()
         // this.addParticles() 
     
     }
@@ -119,7 +119,7 @@ export default class World extends EventEmitter {
         }
     }
 
-    addRingsModel() {
+    addScene() {
         this.ringsModel = this.resources.items.path.scene
         const ringsTexture = this.resources.items.ringTexture
         ringsTexture.encoding = THREE.sRGBEncoding
@@ -148,6 +148,25 @@ export default class World extends EventEmitter {
         innerRing.position.y = -16
 
         this.scene.add(innerRing)
+
+
+        // Light beam
+        const lbGeometry = new THREE.PlaneBufferGeometry(50, 500)
+        const lbMaterial = new THREE.ShaderMaterial({
+            vertexShader: lightBeamVertexShader,
+            fragmentShader: lightBeamFragmentShader,
+            side: THREE.DoubleSide,
+            uniforms: {
+                uTime: { value: 0 },
+                uResolution: { value: new THREE.Vector4 },
+                uTexture: {value: new THREE.TextureLoader().load(particleTexture) }
+            },
+            transparent: true,
+            depthTest: false,
+        })
+
+        const lightBeam = new THREE.Mesh(lbGeometry,lbMaterial)
+        // this.scene.add(lightBeam)
     }
 
     addConceptItems() {
@@ -183,9 +202,11 @@ export default class World extends EventEmitter {
     }
 
     update() {
-        this.raycaster.setFromCamera(this.pointer, this.camera.instanceCamera);
-        const intersects = this.raycaster.intersectObjects(this.conceptsMesh);
+        if(this.raycaster) {
+            this.raycaster.setFromCamera(this.pointer, this.camera.instanceCamera);
+            const intersects = this.raycaster.intersectObjects(this.conceptsMesh);
 
-        intersects.length > 0 ? this.hoveredSphere = intersects[0].object : this.hoveredSphere = null
+            intersects.length > 0 ? this.hoveredSphere = intersects[0].object : this.hoveredSphere = null
+        }
     }
  }

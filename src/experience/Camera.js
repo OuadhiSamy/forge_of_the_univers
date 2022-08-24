@@ -47,6 +47,8 @@ export default class Camera extends EventEmitter {
     initOrbitControls() {
         this.orbitControls = new OrbitControls(this.instanceCamera, this.canvas)
         this.orbitControls.enableDamping = true
+        this.orbitControls.minDistance = 10;
+        this.orbitControls.maxDistance = 200;
     }
 
     moveCameraTo(mesh) {
