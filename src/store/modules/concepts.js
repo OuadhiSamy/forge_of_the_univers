@@ -5,18 +5,19 @@ const state = () => ({
     currentConcept: null,
 })
 
-const getters = {
-    getConceptList (state) {
-        return state.conceptList
-    },
-}
-
 const mutations = {
     setConceptList(state, payload) {
         state.conceptList = payload
     },
+    setIsConceptFocused(state, payload) {
+        state.isConceptFocused = payload
+    },
+    setIsConceptSelected(state, payload) {
+        state.isConceptSelected = payload
+    },
     setCurrentConcept(state, payload) {
-        state.currentConcept = state.conceptList.filter(concept => concept.id === payload);
+        console.log(payload)
+        state.currentConcept = state.conceptList.filter(concept => concept.id === payload)[0];
     },
     openConceptDetail(state) { 
         state.isConceptSelected = true
@@ -29,6 +30,5 @@ const mutations = {
 export default {
     namespaced: true,
     state,
-    getters,
     mutations,
 }

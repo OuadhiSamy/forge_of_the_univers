@@ -13,7 +13,7 @@ export default class Camera extends EventEmitter {
         this.scene = this.threeScene.scene
         this.canvas = this.threeScene.canvas
         this.debug = this.threeScene.debug
-
+    
         this.lookAtPoint = null
         this.focusedMesh = null
 
@@ -31,7 +31,6 @@ export default class Camera extends EventEmitter {
         )
 
         this.lookAtPoint.visible = false
-
     
         this.scene.add(this.instanceCamera, this.lookAtPoint)
 
@@ -51,18 +50,7 @@ export default class Camera extends EventEmitter {
         this.orbitControls.maxDistance = 200;
     }
 
-    moveCameraTo(mesh) {
-
-        console.log(mesh)
-
-        const myEvent = new CustomEvent("myevent", {
-            detail: {conceptId: mesh.userData.conceptId},
-            bubbles: true,
-            cancelable: true,
-            composed: false,
-        });
-
-        document.querySelector("#webgl-canvas").dispatchEvent(myEvent);
+    moveCameraToMesh(mesh) {
 
         if(this.focusedMesh === null || this.focusedMesh.id !== mesh.id) {
 
@@ -76,8 +64,6 @@ export default class Camera extends EventEmitter {
                 .to(this.instanceCamera.position, { x: positionInLine.x, y: positionInLine.y, z: positionInLine.z, duration: 1 })
                 .then(() => this.orbitControls.target.set(...this.lookAtPoint.position))
         }
-
-        
     }
 
     resize() {

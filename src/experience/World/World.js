@@ -26,16 +26,10 @@ export default class World extends EventEmitter {
         this.conceptsMesh = []
         
         this.resources.on('ready', () => {
-            //Lights
             this.environment = new Environment()
             this.addScene()
             this.addConceptItems()
         })
-        
-        // this.addBox()
-        // this.addTorus()
-        // this.addParticles() 
-    
     }
 
     /**
@@ -196,9 +190,23 @@ export default class World extends EventEmitter {
 
     onPointerClick() {
         if(this.hoveredSphere) {
-            this.camera.moveCameraTo(this.hoveredSphere, 0)
+            const conceptSelectedEvent = new CustomEvent("conceptSelected", {
+                detail: {conceptMesh: this.hoveredSphere},
+                bubbles: true,
+                cancelable: true,
+                composed: false,
+            });
+    
+            document.querySelector("#webgl-canvas").dispatchEvent(conceptSelectedEvent);
+            // this.camera.moveCameraToMesh(this.hoveredSphere, 0)
         }
         else console.log('No Object hovered')
+    }
+
+    focusById(id) {
+        // Get mesh by id
+        const mesh = this.conceptsMesh[id]
+        this.camera.moveCameraToMesh(mesh)
     }
 
     update() {

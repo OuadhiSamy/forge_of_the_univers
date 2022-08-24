@@ -16,15 +16,18 @@ import {gsap, Expo } from 'gsap'
 
 export default {
     name: 'prev-next-buttons',
-    computed: mapState({
-      isConceptFocused: state => state.concepts.isConceptFocused,
-    }),
     data() {
         return {
             prevText: 'Prev',
             nextText: 'Next',
         }
     },
+    computed: mapState({
+      threeScene: state => state.scene.threeScene,
+      conceptList: state => state.concepts.conceptList,
+      currentConcept: state => state.concepts.currentConcept,
+      isConceptFocused: state => state.concepts.isConceptFocused,
+    }),
     mounted() {
         this.prevText = new SplitTextJS(this.$refs.prevText).chars
         this.nextText = new SplitTextJS(this.$refs.nextText).chars    
@@ -78,10 +81,14 @@ export default {
             )
         },
         prevConcept() {
-            console.log('Prev')
+            const prevMeshId = this.currentConcept.id === 0 ? this.conceptList.length - 1 : this.currentConcept.id - 1; 
+            this.$store.commit('concepts/setCurrentConcept', prevMeshId)
+            this.threeScene.world.focusById(prevMeshId)
         },
         nextConcept() {
-            console.log('Next')
+            const nextMeshId = this.currentConcept.id === this.conceptList.length -1 ? 0 : this.currentConcept.id + 1; 
+            this.$store.commit('concepts/setCurrentConcept', nextMeshId)
+            this.threeScene.world.focusById(nextMeshId)
         },
     }
 }

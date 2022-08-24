@@ -6,6 +6,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 import ThreeScene from '../experience/ThreeScene'
 import concepts from '../concepts.js'
 
@@ -16,11 +17,18 @@ export default {
       scene: null,
     };
   },
+  computed: mapState({
+      threeScene: state => state.concepts.threeScene,
+    }),
   mounted () {
     this.$store.commit('concepts/setConceptList', concepts)
     this.scene = new ThreeScene(this.$refs.canvas, concepts)
-    document.querySelector("#webgl-canvas").addEventListener("myevent", (event) => {
-      this.$store.commit('concepts/setCurrentConcept', event.detail.conceptId)
+    this.$store.commit('scene/setThreeScene', this.scene)
+    
+    document.querySelector("#webgl-canvas").addEventListener("conceptSelected", (event) => {
+      this.$store.commit('concepts/setCurrentConcept', event.detail.conceptMesh.userData.conceptId)
+      this.$store.commit('concepts/setIsConceptFocused', true)
+      this.scene.camera.moveCameraToMesh(event.detail.conceptMesh)
     });
 
   },
